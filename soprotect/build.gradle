@@ -1,0 +1,404 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.android.local.tool";//[config]=PKG_NAME
+        minSdkVersion 9
+        targetSdkVersion 21
+        versionCode 291
+        versionName "2.9.1"
+    }
+
+    signingConfigs {
+        debug {
+        }
+
+        release {
+            storeFile file("./0803_zhju_apk2_s11.jks")
+            storePassword "ks123456"
+            keyAlias "zhju_apk2_s11"
+            keyPassword "ks123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        SoJarRelease.initWith(buildTypes.release)
+        SoJarRelease {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+def arch_lib_Dir = project.rootDir.absolutePath + '/archlib'
+def so_app_Dir = project.rootDir.absolutePath + '/soprotect'
+def r_lib_Dir = project.rootDir.absolutePath + '/rlib'
+def pre_build_module_name = "prebuild"
+def pre_build_lib_Dir = project.rootDir.absolutePath + File.separator + pre_build_module_name;
+
+def ftoc_tool = so_app_Dir + "/ftoc/ftoc.exe";
+//def ftoc_tool = so_app_Dir + "/ftoc/ftoc";
+def sokey = "MOTT92GK";//[config]=SO_FTOC_KEY
+
+task selectFtoc << {
+    String buildToolPath = android.getSdkDirectory().getAbsolutePath() + File.separator + "build-tools" + File.separator + android.buildToolsVersion;
+
+    File buildToolDir = new File(buildToolPath);
+
+    if (!buildToolDir.exists()) {
+        println("Error happened: buildToolDir ****** NOT ****** exists");
+        System.err("Error happened: buildToolDir ****** NOT ****** exists");
+    }
+
+    for(File f: buildToolDir.listFiles()) {
+        String fileName = f.getName();
+        if (fileName.equals("dx") || fileName.equals("dx.sh")) {
+            // linux
+            ftoc_tool = so_app_Dir + "/ftoc/ftoc";
+            println(" ftoc_tool path : " + ftoc_tool);
+        }
+    }
+}
+
+task makeCryptJar << {
+    project(':cryptlib').tasks.compileJava.execute();
+    project(':cryptlib').tasks.processResources.execute();
+    project(':cryptlib').tasks.classes.execute();
+    project(':cryptlib').tasks.jar.execute();
+
+    project(':prebuild').tasks.compileJava.execute();
+    project(':prebuild').tasks.processResources.execute();
+    project(':prebuild').tasks.classes.execute();
+    project(':prebuild').tasks.fatJar.execute();
+}
+
+
+task encrypt << {
+
+    makeCryptJar.execute();
+
+//    doConfig.execute();
+
+    javaexec {
+        classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+        main = "com.common.crypt.CryptOprator"
+
+        args = [
+                "type:en",
+                "dirs:" + arch_lib_Dir
+                        + "," + so_app_Dir
+                        + "," + r_lib_Dir
+        ]
+    }
+    clean.execute();
+}
+
+task decrypt << {
+    javaexec {
+        classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+        main = "com.common.crypt.CryptOprator"
+
+        args = [
+                "type:de",
+                "dirs:" + arch_lib_Dir
+                        + "," + so_app_Dir
+                        + "," + r_lib_Dir
+        ]
+    }
+}
+
+task ftoc << {
+
+    selectFtoc.execute();
+
+    exec{
+        println "ftoc ======="
+        executable = ftoc_tool;
+        args = [
+                so_app_Dir + "/ftoc/classes.dex",
+                so_app_Dir + "/jni/floader.h",
+                sokey
+        ]
+    }
+}
+
+def date(){
+    return new Date().format("yyyyMMdd")
+}
+
+def soprotectDir = project.rootDir.absolutePath + '/soprotect'
+def libdaemonDir = project.rootDir.absolutePath + '/LibDaemon'
+def ndkDir = project.plugins.findPlugin('com.android.application').sdkHandler.getNdkFolder()
+def copy_so_target_dir = soprotectDir + '/src/main/assets/'
+def copy_daemon_so_target_dir = libdaemonDir + '/src/main/assets/'
+def copy_so_target_name = 'sys_core'
+def copy_so_target_child_dir = 'armeabi/'
+def copy_so_target_child_dir_64 = 'arm64-v8a/'
+def copy_so_target_child_dir_x86 = 'x86/'
+
+//def copy_from_lib= project.buildDir.absolutePath+"/ndk/libs/armeabi/"
+def copy_from_file="libLoader.so"
+def copy_release_target=project.buildDir.absolutePath+"/intermediates/classes-proguard/SojarRelease/"
+def src_jar_file=copy_release_target+"classes.jar"
+task makeSoJar << {
+    println ("soprotect  copy so start");
+    Copy mySoCopy = task(mySoCopy,type:Copy)
+    mySoCopy.from(fileTree(dir:copy_so_target_dir))
+    def target_dir = copy_release_target +"resource/"
+    mySoCopy.into(target_dir)
+    mySoCopy.execute()
+    println ("soprotect  copy so finish");
+
+    Copy myDaemonSoCopy = task(myDaemonSoCopy,type:Copy)
+    myDaemonSoCopy.from(fileTree(dir:copy_daemon_so_target_dir))
+    myDaemonSoCopy.into(target_dir)
+    myDaemonSoCopy.execute()
+    println ("soprotect  copy daemon so finish");
+
+    Jar myJar = task(myJar,type: Jar)
+    myJar.from(zipTree(src_jar_file))
+    myJar.from(copy_release_target)
+    myJar.exclude("*.jar")
+    myJar.archiveName="ksad_"+date()+".jar"
+    myJar.destinationDir=new File(project.buildDir.getAbsolutePath()+"/jaroutput")
+    myJar.execute()
+}
+
+
+task ndkBuild(type: Exec) {
+    println ("soprotect  ndk build start");
+    commandLine "$ndkDir/ndk-build", '-C', 'jni',
+            "NDK_OUT=$buildDir/ndk/obj",
+            "NDK_APP_DST_DIR=$buildDir/ndk/libs/\$(TARGET_ARCH_ABI)"
+    println ("soprotect  ndk build finish");
+}
+
+//task ndkBuild << {
+//    exec{
+//        println "ndkBuild ======="
+//        executable = "$ndkDir/ndk-build.cmd";
+//        args = [
+//                "-C",
+//                "src/main/myjni",
+//                "NDK_OUT=$buildDir/ndk/obj",
+//                "NDK_APP_DST_DIR=$buildDir/ndk/libs/\$(TARGET_ARCH_ABI)"
+//        ]
+//    }
+//}
+
+task makeSoAndCopy << {
+    ndkBuild.execute();
+    Copy myCopy = task(myCopy,type:Copy)
+    myCopy.from(fileTree(dir: file(buildDir.absolutePath + '/ndk/libs/armeabi'), include: '**/*.so'))
+    def target_dir = copy_so_target_dir + copy_so_target_child_dir
+    myCopy.rename(copy_from_file, copy_so_target_name)
+    myCopy.into(target_dir)
+    myCopy.execute()
+
+    Copy myCopy_64 = task(myCopy_64,type:Copy)
+    myCopy_64.from(fileTree(dir: file(buildDir.absolutePath + '/ndk/libs/arm64-v8a'), include: '**/*.so'))
+    def target_dir_64 = copy_so_target_dir + copy_so_target_child_dir_64
+    myCopy_64.rename(copy_from_file, copy_so_target_name)
+    myCopy_64.into(target_dir_64)
+    myCopy_64.execute()
+
+    Copy myCopy_x86 = task(myCopy_x86,type:Copy)
+    myCopy_x86.from(fileTree(dir: file(buildDir.absolutePath + '/ndk/libs/x86'), include: '**/*.so'))
+    def target_dir_x86 = copy_so_target_dir + copy_so_target_child_dir_x86
+    myCopy_x86.rename(copy_from_file, copy_so_target_name)
+    myCopy_x86.into(target_dir_x86)
+    myCopy_x86.execute()
+}
+
+
+/////////////////////////////// 文件加密相关 start //////////////////////////////
+def backupKsoutDir = copy_so_target_dir
+def backupKsoutFileName = copy_so_target_child_dir + copy_so_target_name
+def backupKsoutFileName_64 = copy_so_target_child_dir_64 + copy_so_target_name
+def backupKsoutFileName_x86 = copy_so_target_child_dir_x86 + copy_so_target_name
+def backupDir = soprotectDir + "/temp/";
+
+task backupFile << {
+    String ksoutFilePath = backupKsoutDir + backupKsoutFileName;
+    //文件加密前，备份data
+    if (new File(ksoutFilePath).exists()) {
+        Copy copyKsout = task(copyKsout, type: Copy);
+        copyKsout.from(ksoutFilePath);
+        copyKsout.into((backupDir + copy_so_target_child_dir));
+        copyKsout.execute();
+    }
+
+    String ksout_64FilePath = backupKsoutDir + backupKsoutFileName_64;
+    //文件加密前，备份data_64
+    if (new File(ksout_64FilePath).exists()) {
+        Copy copyKsout_64 = task(copyKsout_64, type: Copy);
+        copyKsout_64.from(ksout_64FilePath);
+        copyKsout_64.into((backupDir + copy_so_target_child_dir_64));
+        copyKsout_64.execute();
+     }
+
+    String ksout_x86FilePath = backupKsoutDir + backupKsoutFileName_x86;
+    //文件加密前，备份data_x86
+    if (new File(ksout_x86FilePath).exists()) {
+        Copy copyKsout_x86 = task(copyKsout_x86, type: Copy);
+        copyKsout_x86.from(ksout_x86FilePath);
+        copyKsout_x86.into((backupDir + copy_so_target_child_dir_x86));
+        copyKsout_x86.execute();
+     }
+}
+
+
+task recoverFile << {
+    if (new File(backupDir).exists()) {
+        //编译完成后，删除备份的data
+        def ksoutFilePath = backupDir + backupKsoutFileName
+        if (new File(ksoutFilePath).exists()) {
+            Copy recoverKsout = task(recoverKsout, type: Copy);
+            recoverKsout.from(ksoutFilePath);
+            recoverKsout.into((backupKsoutDir + copy_so_target_child_dir));
+            recoverKsout.execute();
+            new File(ksoutFilePath).delete();
+        }
+
+        def ksout_64FilePath = backupDir + backupKsoutFileName_64
+        if (new File(ksout_64FilePath).exists()) {
+            Copy recoverKsout_64 = task(recoverKsout_64, type: Copy);
+            recoverKsout_64.from(ksout_64FilePath);
+            recoverKsout_64.into((backupKsoutDir + copy_so_target_child_dir_64));
+            recoverKsout_64.execute();
+            new File(ksout_64FilePath).delete();
+        }
+
+        def ksout_x86FilePath = backupDir + backupKsoutFileName_x86
+        if (new File(ksout_x86FilePath).exists()) {
+            Copy recoverKsout_x86 = task(recoverKsout_x86, type: Copy);
+            recoverKsout_x86.from(ksout_64FilePath);
+            recoverKsout_x86.into((backupKsoutDir + copy_so_target_child_dir_x86));
+            recoverKsout_x86.execute();
+            new File(ksout_x86FilePath).delete();
+        }
+
+        //编译完成后，删除备份的目录
+        new File(backupDir).delete();
+    }
+}
+
+task fileEncrypt << {
+    //文件加密前，先备份
+    backupFile.execute();
+
+    String startKsoutFilePath = backupKsoutDir + backupKsoutFileName;
+    println("fileEncrypt --- startKsoutFilePath: " + startKsoutFilePath)
+
+    if (new File(startKsoutFilePath).exists()) {
+        javaexec {
+            classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+            main = "com.common.crypt.FileCrypt"
+
+            args = [
+                    startKsoutFilePath
+            ]
+        }
+    } else {
+        println("fileEncrypt --- file not exists： " + startKsoutFilePath)
+    }
+
+
+    String startKsout_64FilePath = backupKsoutDir + backupKsoutFileName_64;
+    println("fileEncrypt --- startKsoutFilePath: " + startKsout_64FilePath)
+    if (new File(startKsout_64FilePath).exists()) {
+        javaexec {
+            classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+            main = "com.common.crypt.FileCrypt"
+            args = [
+                    startKsout_64FilePath
+                    ]
+        }
+    } else {
+        println("fileEncrypt --- file not exists： " + startKsout_64FilePath)
+    }
+
+    String startKsout_x86FilePath = backupKsoutDir + backupKsoutFileName_x86;
+    println("fileEncrypt --- startKsoutFilePath: " + startKsout_x86FilePath)
+    if (new File(startKsout_x86FilePath).exists()) {
+        javaexec {
+            classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+            main = "com.common.crypt.FileCrypt"
+            args = [
+                    startKsout_x86FilePath
+                    ]
+        }
+    } else {
+        println("fileEncrypt --- file not exists： " + startKsout_x86FilePath)
+    }
+}
+
+
+//task copyJniLibs(type: Copy) {
+//    from fileTree(dir: file(buildDir.absolutePath + '/ndk/libs'), include: '**/*.so')
+//    into file('src/main/jniLibs')
+//}
+
+assembleDebug.dependsOn{
+    println ("soprotect  assembleDebug.dependsOn");
+    encrypt.execute();
+    ftoc.execute();
+    makeSoAndCopy.execute();
+    fileEncrypt.execute();
+}
+
+assembleDebug.doLast {
+    decrypt.execute();
+    recoverFile.execute();
+}
+
+assembleRelease.dependsOn {
+    encrypt.execute();
+    ftoc.execute();
+    makeSoAndCopy.execute();
+    fileEncrypt.execute();
+}
+
+assembleRelease.doLast {
+    decrypt.execute();
+    recoverFile.execute();
+}
+
+
+assembleSoJarRelease.dependsOn {
+    encrypt.execute();
+    ftoc.execute();
+    makeSoAndCopy.execute();
+    fileEncrypt.execute();
+
+}
+
+assembleSoJarRelease.doLast {
+    decrypt.execute();
+    makeSoJar.execute();
+    recoverFile.execute();
+}
+
+task showTest << {
+    android.buildToolsVersion
+}
+
+dependencies {
+    testCompile project(':prebuild')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':cryptlib')
+    compile project(':LibDaemon')
+}

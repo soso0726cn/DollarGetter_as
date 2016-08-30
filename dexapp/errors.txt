@@ -1,0 +1,271 @@
+
+------
+*** 导入报错 ***
+下面这些类找不到。 解决方法： api 23中报很多apache相关的类都删除了，所以不能使用api 23, 改为api 21就好了。
+或者useLibrary 'org.apache.http.legacy'
+=====
+import org.apache.http.protocol.HTTP;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.params.ConnPerRouteBean;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+=======
+
+
+
+5.0乐视手机：
+-----
+Intent downloadSvr = new Intent(appContext, DownloadService.class);
+appContext.startService(downloadSvr);
+-----
+
+E/AndroidRuntime(23462): FATAL EXCEPTION: main
+E/AndroidRuntime(23462): Process: com.slk.flyingpopboard, PID: 23462
+E/AndroidRuntime(23462): java.lang.IllegalArgumentException: Service Intent must be explicit: Intent { act=download.service.action }
+E/AndroidRuntime(23462): 	at android.app.ContextImpl.validateServiceIntent(ContextImpl.java:1767)
+E/AndroidRuntime(23462): 	at android.app.ContextImpl.startServiceCommon(ContextImpl.java:1796)
+E/AndroidRuntime(23462): 	at android.app.ContextImpl.startService(ContextImpl.java:1780)
+E/AndroidRuntime(23462): 	at android.content.ContextWrapper.startService(ContextWrapper.java:515)
+E/AndroidRuntime(23462): 	at com.lidroid.xutils.download.DownloadService.getDownloadManager(DownloadService.java:25)
+E/AndroidRuntime(23462): 	at com.slk.flyingpopboard.MainActivity.download(MainActivity.java:33)
+E/AndroidRuntime(23462): 	at com.slk.flyingpopboard.MainActivity$1.onClick(MainActivity.java:27)
+E/AndroidRuntime(23462): 	at android.view.View.performClick(View.java:4840)
+E/AndroidRuntime(23462): 	at android.view.View$PerformClick.run(View.java:20264)
+E/AndroidRuntime(23462): 	at android.os.Handler.handleCallback(Handler.java:815)
+E/AndroidRuntime(23462): 	at android.os.Handler.dispatchMessage(Handler.java:104)
+E/AndroidRuntime(23462): 	at android.os.Looper.loop(Looper.java:194)
+E/AndroidRuntime(23462): 	at android.app.ActivityThread.main(ActivityThread.java:5589)
+E/AndroidRuntime(23462): 	at java.lang.reflect.Method.invoke(Native Method)
+E/AndroidRuntime(23462): 	at java.lang.reflect.Method.invoke(Method.java:372)
+E/AndroidRuntime(23462): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:956)
+E/AndroidRuntime(23462): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:751)
+
+
+
+------- 下载中点击通知栏：
+11-02 22:07:45.604 E/CrashHandler( 4000): uncaughtException: Attempt to invoke virtual method 'java.lang.String com.slk.flyingpopboard.ksads.data.AdData.getKey()' on a null object reference
+11-02 22:07:45.604 E/CrashHandler( 4000): handleException: Attempt to invoke virtual method 'java.lang.String com.slk.flyingpopboard.ksads.data.AdData.getKey()' on a null object reference
+11-02 22:07:45.604 W/System.err( 4000): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String com.slk.flyingpopboard.ksads.data.AdData.getKey()' on a null object reference
+11-02 22:07:45.604 W/System.err( 4000): 	at com.slk.flyingpopboard.download.PkgDownloadCallback.onStart(PkgDownloadCallback.java:32)
+11-02 22:07:45.604 W/System.err( 4000): 	at com.slk.flyingpopboard.download.DownloadManager$ManagerCallBack.onStart(DownloadManager.java:273)
+11-02 22:07:45.604 W/System.err( 4000): 	at com.third.tools.http.HttpHandler.onProgressUpdate(HttpHandler.java:200)
+11-02 22:07:45.604 W/System.err( 4000): 	at com.third.tools.task.PriorityAsyncTask$InternalHandler.handleMessage(PriorityAsyncTask.java:385)
+11-02 22:07:45.604 W/System.err( 4000): 	at android.os.Handler.dispatchMessage(Handler.java:111)
+11-02 22:07:45.605 W/System.err( 4000): 	at android.os.Looper.loop(Looper.java:194)
+11-02 22:07:45.605 W/System.err( 4000): 	at android.app.ActivityThread.main(ActivityThread.java:5589)
+11-02 22:07:45.605 W/System.err( 4000): 	at java.lang.reflect.Method.invoke(Native Method)
+11-02 22:07:45.605 W/System.err( 4000): 	at java.lang.reflect.Method.invoke(Method.java:372)
+11-02 22:07:45.605 W/System.err( 4000): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:956)
+11-02 22:07:45.605 W/System.err( 4000): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:751)
+
+
+
+
+
+*** 数据库异步操作异常**
+10-22 01:16:48.797 D/lijc    ( 6654): --------- url: market://details?id=com.ijinshan.kbatterydoctor_en&referrer=af_tranid%3DC7SNBBCTEQVSWK4%26clickid%3D35afe2400-4e32-bbcd-78f4ce72480294566b0fc8c02370afc70d813ad11b70009%26af_siteid%3D102009%26pid%3Dyeahmobi_int%26af_sub1%3D102009%26af_sub2%3D102009%26utm_source%3D10000191
+10-22 01:16:48.820 W/System.err( 6654): java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase: /data/data/com.slk.flyingpopboard.develop/databases/gref.db
+10-22 01:16:48.820 W/System.err( 6654): 	at android.database.sqlite.SQLiteClosable.acquireReference(SQLiteClosable.java:55)
+10-22 01:16:48.820 W/System.err( 6654): 	at android.database.sqlite.SQLiteDatabase.insertWithOnConflict(SQLiteDatabase.java:1439)
+10-22 01:16:48.820 W/System.err( 6654): 	at android.database.sqlite.SQLiteDatabase.insert(SQLiteDatabase.java:1341)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.slk.flyingpopboard.gptracker.db.ReferDao.addByKey(ReferDao.java:123)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.slk.flyingpopboard.gptracker.WebViewTracker$1.shouldOverrideUrlLoading(WebViewTracker.java:61)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.android.webview.chromium.WebViewContentsClientAdapter.shouldOverrideUrlLoading(WebViewContentsClientAdapter.java:343)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.android.org.chromium.android_webview.AwContentsClientBridge.shouldOverrideUrlLoading(AwContentsClientBridge.java:261)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.android.org.chromium.base.SystemMessageHandler.nativeDoRunLoopOnce(Native Method)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.android.org.chromium.base.SystemMessageHandler.handleMessage(SystemMessageHandler.java:53)
+10-22 01:16:48.820 W/System.err( 6654): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+10-22 01:16:48.820 W/System.err( 6654): 	at android.os.Looper.loop(Looper.java:135)
+10-22 01:16:48.820 W/System.err( 6654): 	at android.app.ActivityThread.main(ActivityThread.java:5254)
+10-22 01:16:48.820 W/System.err( 6654): 	at java.lang.reflect.Method.invoke(Native Method)
+10-22 01:16:48.820 W/System.err( 6654): 	at java.lang.reflect.Method.invoke(Method.java:372)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:903)
+10-22 01:16:48.820 W/System.err( 6654): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:698)
+10-22 01:16:48.820 F/chromium( 6654): [FATAL:jni_android.cc(269)] Check failed: false. Please include Java exception stack in crash report
+10-22 01:16:48.820 F/libc    ( 6654): Fatal signal 6 (SIGABRT), code -6 in tid 6654 (opboard.develop)
+10-22 01:16:48.922 I/DEBUG   (   84): pid: 6654, tid: 6654, name: opboard.develop  >>> com.slk.flyingpopboard.develop <<<
+
+
+
+
+****
+11-03 12:02:11.633 I/MemoryCache(31755): MemoryCache will use up to 9.59999942779541MB
+11-03 12:02:11.633 W/System.err(31755): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String android.content.Context.getPackageName()' on a null object reference
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.utils.ImageLoader.<init>(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.utils.ImageLoader.getInstance(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.show.AdShow.queuePicture(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.show.AdShow.show(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.ksads.popad.PopAd.show(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask.prepareToShow(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask.access$300(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask$2$1.onAdLoaded(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.ksads.AdLoader.responseLoadAd(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.ksads.AdLoader.loadAd(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.ksads.popad.PopAd.loadAd(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask$2.onAppSwitched(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at com.slk.flyingpopboard.trigger.AppSwitchMonitor.run(Unknown Source)
+11-03 12:02:11.633 W/System.err(31755): 	at java.lang.Thread.run(Thread.java:818)
+11-03 12:02:11.634 D/AppSwitch(31755): running app size: 25
+
+***
+11-03 11:55:24.971 D/AppSwitch(16463): AppRecord.pName----com.expressvpn.vpn ;currentTopPname: com.expressvpn.vpn
+11-03 11:55:26.354 I/track   (16463): addReferFailTime time = 1,ReferData: key = 28,pname = air.com.sgn.juicejam.gpwhenTracked =1446569711347
+11-03 11:55:26.358 I/track   (16463): request adData key = 33, adData pname = com.cleanmaster.security
+11-03 11:55:26.365 W/track   (16463): java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
+11-03 11:55:26.365 W/track   (16463): 	at android.os.Handler.<init>(Handler.java:200)
+11-03 11:55:26.365 W/track   (16463): 	at android.os.Handler.<init>(Handler.java:114)
+11-03 11:55:26.365 W/track   (16463): 	at com.slk.flyingpopboard.gptracker.TrackThreadHandler$1.<init>(Unknown Source)
+11-03 11:55:26.365 W/track   (16463): 	at com.slk.flyingpopboard.gptracker.TrackThreadHandler.init(Unknown Source)
+11-03 11:55:26.365 W/track   (16463): 	at com.slk.flyingpopboard.gptracker.TrackThreadHandler.<init>(Unknown Source)
+11-03 11:55:26.365 W/track   (16463): 	at com.slk.flyingpopboard.gptracker.TrackThreadHandler.getInstance(Unknown Source)
+11-03 11:55:26.365 W/track   (16463): 	at com.slk.flyingpopboard.gptracker.TrackGP.getReferrerByHandler(Unknown Source)
+11-03 11:55:26.365 W/track   (16463): 	at com.slk.flyingpopboard.gptracker.TrackGP.isSyncGetReferrerOk(Unknown Source)
+11-03 11:55:26.365 W/track   (16463): 	at com.slk.flyingpopboard.gptracker.TrackGetter$1.run(Unknown Source)
+11-03 11:55:26.365 W/track   (16463): 	at java.lang.Thread.run(Thread.java:818)
+
+
+*** dex调用
+W/System.err(31755): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String android.content.Context.getPackageName()' on a null object reference
+W/System.err(31755): 	at com.slk.flyingpopboard.utils.ImageLoader.<init>(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.utils.ImageLoader.getInstance(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.show.AdShow.queuePicture(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.show.AdShow.show(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.ksads.popad.PopAd.show(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask.prepareToShow(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask.access$300(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask$2$1.onAdLoaded(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.ksads.AdLoader.responseLoadAd(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.ksads.AdLoader.loadAd(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.ksads.popad.PopAd.loadAd(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.init.HandleMainTask$2.onAppSwitched(Unknown Source)
+W/System.err(31755): 	at com.slk.flyingpopboard.trigger.AppSwitchMonitor.run(Unknown Source)
+W/System.err(31755): 	at java.lang.Thread.run(Thread.java:818)
+
+
+*****
+
+
+11-04 22:58:40.090 7625-7770/com.lsk.dex D/lijc: ----app switched -- pname: null
+11-04 22:58:40.090 7625-7770/com.lsk.dex W/System.err: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean java.lang.String.contains(java.lang.CharSequence)' on a null object reference
+11-04 22:58:40.090 7625-7770/com.lsk.dex W/System.err:     at com.slk.flyingpopboard.trigger.SwitchPolicy.checkFilter(Unknown Source)
+11-04 22:58:40.090 7625-7770/com.lsk.dex W/System.err:     at com.slk.flyingpopboard.trigger.SwitchPolicy.shouldShowAd(Unknown Source)
+11-04 22:58:40.090 7625-7770/com.lsk.dex W/System.err:     at com.slk.flyingpopboard.init.HandleMainTask$2.onAppSwitched(Unknown Source)
+11-04 22:58:40.090 7625-7770/com.lsk.dex W/System.err:     at com.slk.flyingpopboard.trigger.AppSwitchMonitor.run(Unknown Source)
+11-04 22:58:40.090 7625-7770/com.lsk.dex W/System.err:     at java.lang.Thread.run(Thread.java:818)
+11-04 22:58:40.091 7625-7770/com.lsk.dex D/AppSwitch: running app size: 1
+11-04 22:58:40.091 7625-7770/com.lsk.dex D/lijc: ----app switched -- pname: null
+
+
+*** 编译错误
+:app:mergeCryptReleaseResourcesAAPT err(780463312) : No Delegate set : lost message:/Users/lijichuan/Documents/develop/kingsgame/hhaiwaiad/DollarGetter_as/DollarGetter_as/app/src/main/res/drawable/fl_lock_btn_remove_pressed.png: libpng warning: iCCP: Not recognizing known sRGB profile that has been edited
+AAPT err(15767905) : No Delegate set : lost message:/Users/lijichuan/Documents/develop/kingsgame/hhaiwaiad/DollarGetter_as/DollarGetter_as/app/src/main/res/drawable/fl_lock_btn_remove_normal.png: libpng warning: iCCP: Not recognizing known sRGB profile that has been edited
+
+*** dex运行错误：
+11-04 12:41:56.307 W/dalvikvm( 2023): threadid=1: thread exiting with uncaught exception (group=0xa4d66b20)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): FATAL EXCEPTION: main
+11-04 12:41:56.307 E/AndroidRuntime( 2023): Process: com.lsk.dex, PID: 2023
+11-04 12:41:56.307 E/AndroidRuntime( 2023): java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.phone.ap.a(Unknown Source)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.phone.ap.a(Unknown Source)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.phone.aj.d(Unknown Source)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.phone.aj.c(Unknown Source)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.phone.aj.c(Unknown Source)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.phone.ak.handleMessage(Unknown Source)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at android.os.Looper.loop(Looper.java:136)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at android.app.ActivityThread.main(ActivityThread.java:5001)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at java.lang.reflect.Method.invokeNative(Native Method)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at java.lang.reflect.Method.invoke(Method.java:515)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:785)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:601)
+11-04 12:41:56.307 E/AndroidRuntime( 2023): 	at dalvik.system.NativeStart.main(Native Method)
+
+
+
+E/AndroidRuntime( 7040): java.lang.NullPointerException
+E/AndroidRuntime( 7040): 	at com.android.phone.j.a(Unknown Source)
+E/AndroidRuntime( 7040): 	at com.android.phone.j.a(Unknown Source)
+E/AndroidRuntime( 7040): 	at com.android.phone.k.run(Unknown Source)
+E/AndroidRuntime( 7040): 	at java.util.Timer$TimerImpl.run(Timer.java:284)
+
+
+*** 创建目录失败：//TODO
+11-08 01:38:00.585 31101-31101/com.slk.flyingpopboard.develop D/AbsListView: checkAbsListViewlLogProperty get invalid command
+11-08 01:38:00.602 31101-31101/com.slk.flyingpopboard.develop W/ContextImpl: Failed to ensure directory: /storage/emulated/0/Android/data/com.slk.flyingpopboard.develop/cache
+11-08 01:38:00.605 31101-31101/com.slk.flyingpopboard.develop E/CrashHandler: setCrashReportDir failed: can NOT create directory /storage/emulated/0/Android/error
+11-08 01:38:00.605 31101-31101/com.slk.flyingpopboard.develop W/System.err: java.io.IOException: Unable to create directory /storage/emulated/0/Android/error
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.common.utils.io.FileUtils.forceMkdir(FileUtils.java:1285)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.arch.errorlog.CrashHandler.setCrashReportDir(CrashHandler.java:61)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.arch.errorlog.CrashHandler.initCrashReportDir(CrashHandler.java:85)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.arch.errorlog.CrashHandler.init(CrashHandler.java:117)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.FlyingApp.init(FlyingApp.java:18)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.init.HandleMainTask.<init>(HandleService.java:54)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.init.HandleMainTask.getInstance(HandleService.java:47)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.MainActivity.onCreate(MainActivity.java:55)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.Activity.performCreate(Activity.java:5966)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1106)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2408)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2519)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread.access$800(ActivityThread.java:162)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1412)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.os.Handler.dispatchMessage(Handler.java:106)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.os.Looper.loop(Looper.java:189)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread.main(ActivityThread.java:5532)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at java.lang.reflect.Method.invoke(Native Method)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at java.lang.reflect.Method.invoke(Method.java:372)
+11-08 01:38:00.606 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:950)
+11-08 01:38:00.607 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:745)
+11-08 01:38:00.647 31101-31101/com.slk.flyingpopboard.develop E/Key: WM  key==907  slot 23188
+11-08 01:38:00.650 31101-31101/com.slk.flyingpopboard.develop E/Log: --- write log to file exception: /storage/emulated/0/Android/log/2015-11-08.txt: open failed: EBUSY (Device or resource busy)
+11-08 01:38:00.651 31101-31101/com.slk.flyingpopboard.develop E/Key: YB  key==937  slot 23199
+11-08 01:38:00.653 31101-31101/com.slk.flyingpopboard.develop E/Log: --- write log to file exception: /storage/emulated/0/Android/log/2015-11-08.txt: open failed: EBUSY (Device or resource busy)
+11-08 01:38:00.653 31101-31101/com.slk.flyingpopboard.develop E/Key: subchannel key== 80010101
+11-08 01:38:00.655 31101-31101/com.slk.flyingpopboard.develop E/Log: --- write log to file exception: /storage/emulated/0/Android/log/2015-11-08.txt: open failed: EBUSY (Device or resource busy)
+11-08 01:38:00.659 31101-31101/com.slk.flyingpopboard.develop D/lijc: init.start handleService
+11-08 01:38:00.661 31101-31101/com.slk.flyingpopboard.develop E/Log: --- write log to file exception: /storage/emulated/0/Android/log/2015-11-08.txt: open failed: EBUSY (Device or resource busy)
+11-08 01:38:00.665 31101-31101/com.slk.flyingpopboard.develop V/ActivityThread: Performing resume of ActivityRecord{bba671f token=android.os.BinderProxy@2ac38a6c {com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity}} finished=false
+11-08 01:38:00.665 31101-31101/com.slk.flyingpopboard.develop D/ActivityThread: ACT-AM_ON_RESUME_CALLED ActivityRecord{bba671f token=android.os.BinderProxy@2ac38a6c {com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity}}
+11-08 01:38:00.666 31101-31101/com.slk.flyingpopboard.develop V/PhoneWindow: DecorView setVisiblity: visibility = 4 ,Parent =null, this =com.android.internal.policy.impl.PhoneWindow$DecorView{13a8563b I.E..... R.....I. 0,0-0,0}
+11-08 01:38:00.665 31101-31101/com.slk.flyingpopboard.develop V/ActivityThread: Resume ActivityRecord{bba671f token=android.os.BinderProxy@2ac38a6c {com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity}} started activity: false, hideForNow: false, finished: false
+11-08 01:38:00.675 31101-31127/com.slk.flyingpopboard.develop D/OpenGLRenderer: initialize DisplayEventReceiver 0xb82fdb10
+11-08 01:38:00.675 31101-31127/com.slk.flyingpopboard.develop D/OpenGLRenderer: Render dirty regions requested: false
+11-08 01:38:00.684 31101-31101/com.slk.flyingpopboard.develop D/GraphicBuffer: register, handle(0xb82ff5a0) (w:768 h:768 s:768 f:0x1 u:0x000100)
+11-08 01:38:00.684 31101-31101/com.slk.flyingpopboard.develop D/Atlas: Validating map...
+11-08 01:38:00.689 31101-31101/com.slk.flyingpopboard.develop V/ActivityThread: Resuming ActivityRecord{bba671f token=android.os.BinderProxy@2ac38a6c {com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity}} with isForward=true
+11-08 01:38:00.690 31101-31101/com.slk.flyingpopboard.develop V/PhoneWindow: DecorView setVisiblity: visibility = 0 ,Parent =ViewRoot{39b9e0ff com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity,ident = 0}, this =com.android.internal.policy.impl.PhoneWindow$DecorView{13a8563b V.E..... R.....I. 0,0-0,0}
+11-08 01:38:00.690 31101-31101/com.slk.flyingpopboard.develop V/ActivityThread: Scheduling idle handler for ActivityRecord{bba671f token=android.os.BinderProxy@2ac38a6c {com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity}}
+11-08 01:38:00.690 31101-31101/com.slk.flyingpopboard.develop D/ActivityThread: ACT-LAUNCH_ACTIVITY handled : 0 / ActivityRecord{bba671f token=android.os.BinderProxy@2ac38a6c {com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity}}
+11-08 01:38:00.691 31101-31101/com.slk.flyingpopboard.develop D/ActivityThread: ACT-AM_ON_PAUSE_CALLED ActivityRecord{bba671f token=android.os.BinderProxy@2ac38a6c {com.slk.flyingpopboard.develop/com.slk.flyingpopboard.MainActivity}}
+11-08 01:38:00.692 31101-31101/com.slk.flyingpopboard.develop D/ActivityThread: ACT-PAUSE_ACTIVITY handled : 0 / android.os.BinderProxy@2ac38a6c
+11-08 01:38:00.693 31101-31101/com.slk.flyingpopboard.develop D/ActivityThread: BDC-Calling onReceive: intent=Intent { act=android.intent.action.PACKAGE_REMOVED dat=package:com.slk.flyingpopboard.develop flg=0x4000010 cmp=com.slk.flyingpopboard.develop/com.slk.flyingpopboard.test.TriggerReceiver (has extras) }, receiver=com.slk.flyingpopboard.test.TriggerReceiver@31d0c515
+11-08 01:38:00.693 31101-31101/com.slk.flyingpopboard.develop D/lijc: action: android.intent.action.PACKAGE_REMOVED
+11-08 01:38:00.696 31101-31101/com.slk.flyingpopboard.develop I/wmm: deleteRecordByPname : com.slk.flyingpopboard.develop
+11-08 01:38:00.698 31101-31101/com.slk.flyingpopboard.develop E/Log: --- write log to file exception: /storage/emulated/0/Android/log/2015-11-08.txt: open failed: EBUSY (Device or resource busy)
+11-08 01:38:00.700 31101-31101/com.slk.flyingpopboard.develop W/System.err: java.io.FileNotFoundException: /storage/emulated/0/Android/seria/launch_records: open failed: EBUSY (Device or resource busy)
+11-08 01:38:00.700 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at libcore.io.IoBridge.open(IoBridge.java:491)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at java.io.FileOutputStream.<init>(FileOutputStream.java:87)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at java.io.FileOutputStream.<init>(FileOutputStream.java:72)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.actication.SerializableUtil.writeObject(SerializableUtil.java:43)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.actication.LaunchRecordManager.saveToSD(LaunchRecordManager.java:59)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.actication.LaunchRecordManager.deleteRecordByPname(LaunchRecordManager.java:50)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.actication.PackageReceiver.onReceive(PackageReceiver.java:31)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.init.HandleReceiver.onReceive(HandleReceiver.java:28)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.test.TriggerReceiver.gotoCheck(TriggerReceiver.java:48)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.slk.flyingpopboard.test.TriggerReceiver.onReceive(TriggerReceiver.java:42)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread.handleReceiver(ActivityThread.java:2746)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread.access$1700(ActivityThread.java:162)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1489)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.os.Handler.dispatchMessage(Handler.java:106)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.os.Looper.loop(Looper.java:189)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at android.app.ActivityThread.main(ActivityThread.java:5532)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at java.lang.reflect.Method.invoke(Native Method)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at java.lang.reflect.Method.invoke(Method.java:372)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:950)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:745)
+11-08 01:38:00.701 31101-31101/com.slk.flyingpopboard.develop W/System.err: Caused by: android.system.ErrnoException: open failed: EBUSY (Device or resource busy)
+11-08 01:38:00.702 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at libcore.io.Posix.open(Native Method)
+11-08 01:38:00.702 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at libcore.io.BlockGuardOs.open(BlockGuardOs.java:186)
+11-08 01:38:00.702 31101-31101/com.slk.flyingpopboard.develop W/System.err:     at libcore.io.IoBridge.open(IoBridge.java:477)
+11-08 01:38:00.702 31101-31101/com.slk.flyingpopboard.develop W/System.err: 	... 19 more

@@ -1,0 +1,41 @@
+com.slk.daemon.DaemonApplication
+com.slk.daemon.DaemonApplication: com.slk.daemon.IDaemonClient mDaemonClient
+com.slk.daemon.DaemonApplication: boolean mHasAttachBaseContext
+com.slk.daemon.DaemonApplication: com.slk.daemon.DaemonConfigurations getDaemonConfigurations()
+com.slk.daemon.DaemonApplication: DaemonApplication()
+com.slk.daemon.DaemonApplication: void attachBaseContext(android.content.Context)
+com.slk.daemon.DaemonApplication: void attachBaseContextByDaemon(android.content.Context)
+com.slk.daemon.DaemonClient
+com.slk.daemon.DaemonClient: com.slk.daemon.DaemonConfigurations mConfigurations
+com.slk.daemon.DaemonClient: java.lang.String DAEMON_PERMITTING_SP_FILENAME
+com.slk.daemon.DaemonClient: java.lang.String DAEMON_PERMITTING_SP_KEY
+com.slk.daemon.DaemonClient: java.io.BufferedReader mBufferedReader
+com.slk.daemon.DaemonClient: DaemonClient(com.slk.daemon.DaemonConfigurations)
+com.slk.daemon.DaemonClient: void onAttachBaseContext(android.content.Context)
+com.slk.daemon.DaemonClient: void initDaemon(android.content.Context)
+com.slk.daemon.DaemonClient: java.lang.String getProcessName()
+com.slk.daemon.DaemonClient: void releaseIO()
+com.slk.daemon.DaemonClient: boolean isDaemonPermitting(android.content.Context)
+com.slk.daemon.DaemonClient: boolean setDaemonPermiiting(android.content.Context,boolean)
+com.slk.daemon.DaemonConfigurations
+com.slk.daemon.DaemonConfigurations: com.slk.daemon.DaemonConfigurations$DaemonConfiguration PERSISTENT_CONFIG
+com.slk.daemon.DaemonConfigurations: com.slk.daemon.DaemonConfigurations$DaemonConfiguration DAEMON_ASSISTANT_CONFIG
+com.slk.daemon.DaemonConfigurations: com.slk.daemon.DaemonConfigurations$DaemonListener LISTENER
+com.slk.daemon.DaemonConfigurations: DaemonConfigurations(com.slk.daemon.DaemonConfigurations$DaemonConfiguration,com.slk.daemon.DaemonConfigurations$DaemonConfiguration)
+com.slk.daemon.DaemonConfigurations: DaemonConfigurations(com.slk.daemon.DaemonConfigurations$DaemonConfiguration,com.slk.daemon.DaemonConfigurations$DaemonConfiguration,com.slk.daemon.DaemonConfigurations$DaemonListener)
+com.slk.daemon.DaemonConfigurations$DaemonConfiguration
+com.slk.daemon.DaemonConfigurations$DaemonConfiguration: java.lang.String PROCESS_NAME
+com.slk.daemon.DaemonConfigurations$DaemonConfiguration: java.lang.String SERVICE_NAME
+com.slk.daemon.DaemonConfigurations$DaemonConfiguration: java.lang.String RECEIVER_NAME
+com.slk.daemon.DaemonConfigurations$DaemonConfiguration: DaemonConfigurations$DaemonConfiguration(java.lang.String,java.lang.String,java.lang.String)
+com.slk.daemon.DaemonConfigurations$DaemonListener
+com.slk.daemon.DaemonConfigurations$DaemonListener: void onPersistentStart(android.content.Context)
+com.slk.daemon.DaemonConfigurations$DaemonListener: void onDaemonAssistantStart(android.content.Context)
+com.slk.daemon.DaemonConfigurations$DaemonListener: void onWatchDaemonDaed()
+com.slk.daemon.NativeDaemonBase
+com.slk.daemon.NativeDaemonBase: android.content.Context mContext
+com.slk.daemon.NativeDaemonBase: NativeDaemonBase(android.content.Context)
+com.slk.daemon.NativeDaemonBase: void onDaemonDead()
+com.slk.daemon.nativ.NativeDaemonAPI
+com.slk.daemon.nativ.NativeDaemonAPI: void doDaemon20(java.lang.String,java.lang.String,java.lang.String)
+com.slk.daemon.nativ.NativeDaemonAPI: void doDaemon21(java.lang.String,java.lang.String,java.lang.String,java.lang.String)

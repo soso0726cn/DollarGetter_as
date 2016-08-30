@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DollarGetter_as.iml" filepath="$PROJECT_DIR$/DollarGetter_as.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LibDaemon/LibDaemon.iml" filepath="$PROJECT_DIR$/LibDaemon/LibDaemon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/archlib/archlib.iml" filepath="$PROJECT_DIR$/archlib/archlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cryptlib/cryptlib.iml" filepath="$PROJECT_DIR$/cryptlib/cryptlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dexapp/dexapp.iml" filepath="$PROJECT_DIR$/dexapp/dexapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/prebuild/prebuild.iml" filepath="$PROJECT_DIR$/prebuild/prebuild.iml" />
+      <module fileurl="file://$PROJECT_DIR$/signvalues/signvalues.iml" filepath="$PROJECT_DIR$/signvalues/signvalues.iml" />
+      <module fileurl="file://$PROJECT_DIR$/soprotect/soprotect.iml" filepath="$PROJECT_DIR$/soprotect/soprotect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xutils/xutils.iml" filepath="$PROJECT_DIR$/xutils/xutils.iml" />
+    </modules>
+  </component>
+</project>

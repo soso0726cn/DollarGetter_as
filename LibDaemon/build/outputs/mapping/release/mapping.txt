@@ -1,0 +1,179 @@
+com.slk.daemon.DaemonApplication -> com.slk.daemon.DaemonApplication:
+    com.slk.daemon.IDaemonClient mDaemonClient -> mDaemonClient
+    boolean mHasAttachBaseContext -> mHasAttachBaseContext
+    com.slk.daemon.DaemonConfigurations getDaemonConfigurations() -> getDaemonConfigurations
+    void <init>() -> <init>
+    void attachBaseContext(android.content.Context) -> attachBaseContext
+    void attachBaseContextByDaemon(android.content.Context) -> attachBaseContextByDaemon
+com.slk.daemon.DaemonClient -> com.slk.daemon.DaemonClient:
+    com.slk.daemon.DaemonConfigurations mConfigurations -> mConfigurations
+    java.lang.String DAEMON_PERMITTING_SP_FILENAME -> DAEMON_PERMITTING_SP_FILENAME
+    java.lang.String DAEMON_PERMITTING_SP_KEY -> DAEMON_PERMITTING_SP_KEY
+    java.io.BufferedReader mBufferedReader -> mBufferedReader
+    void <init>(com.slk.daemon.DaemonConfigurations) -> <init>
+    void onAttachBaseContext(android.content.Context) -> onAttachBaseContext
+    void initDaemon(android.content.Context) -> initDaemon
+    java.lang.String getProcessName() -> getProcessName
+    void releaseIO() -> releaseIO
+    boolean isDaemonPermitting(android.content.Context) -> isDaemonPermitting
+    boolean setDaemonPermiiting(android.content.Context,boolean) -> setDaemonPermiiting
+com.slk.daemon.DaemonConfigurations -> com.slk.daemon.DaemonConfigurations:
+    com.slk.daemon.DaemonConfigurations$DaemonConfiguration PERSISTENT_CONFIG -> PERSISTENT_CONFIG
+    com.slk.daemon.DaemonConfigurations$DaemonConfiguration DAEMON_ASSISTANT_CONFIG -> DAEMON_ASSISTANT_CONFIG
+    com.slk.daemon.DaemonConfigurations$DaemonListener LISTENER -> LISTENER
+    void <init>(com.slk.daemon.DaemonConfigurations$DaemonConfiguration,com.slk.daemon.DaemonConfigurations$DaemonConfiguration) -> <init>
+    void <init>(com.slk.daemon.DaemonConfigurations$DaemonConfiguration,com.slk.daemon.DaemonConfigurations$DaemonConfiguration,com.slk.daemon.DaemonConfigurations$DaemonListener) -> <init>
+com.slk.daemon.DaemonConfigurations$DaemonConfiguration -> com.slk.daemon.DaemonConfigurations$DaemonConfiguration:
+    java.lang.String PROCESS_NAME -> PROCESS_NAME
+    java.lang.String SERVICE_NAME -> SERVICE_NAME
+    java.lang.String RECEIVER_NAME -> RECEIVER_NAME
+    void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
+com.slk.daemon.DaemonConfigurations$DaemonListener -> com.slk.daemon.DaemonConfigurations$DaemonListener:
+    void onPersistentStart(android.content.Context) -> onPersistentStart
+    void onDaemonAssistantStart(android.content.Context) -> onDaemonAssistantStart
+    void onWatchDaemonDaed() -> onWatchDaemonDaed
+com.slk.daemon.IDaemonClient -> com.slk.daemon.a:
+    void onAttachBaseContext(android.content.Context) -> onAttachBaseContext
+com.slk.daemon.IDaemonStrategy -> com.slk.daemon.b:
+    boolean onInitialization(android.content.Context) -> a
+    void onPersistentCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> a
+    void onDaemonAssistantCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> b
+    void onDaemonDead() -> a
+com.slk.daemon.IDaemonStrategy$Fetcher -> com.slk.daemon.b$a:
+    com.slk.daemon.IDaemonStrategy mDaemonStrategy -> a
+    com.slk.daemon.IDaemonStrategy fetchStrategy() -> a
+com.slk.daemon.NativeDaemonBase -> com.slk.daemon.NativeDaemonBase:
+    android.content.Context mContext -> mContext
+    void <init>(android.content.Context) -> <init>
+    void onDaemonDead() -> onDaemonDead
+com.slk.daemon.nativ.DaemonLibLoader -> com.slk.daemon.nativ.a:
+    java.lang.String pkgName -> a
+    java.lang.String APP_DATA -> b
+    com.slk.daemon.nativ.DaemonLibLoader mLibLoader -> c
+    boolean isLoader -> d
+    com.slk.daemon.nativ.DaemonLibLoader getLoader(android.content.Context) -> a
+    boolean isLoader() -> a
+    java.io.File getLibFile(java.lang.String) -> a
+    void <init>(android.content.Context) -> <init>
+    void loadLibFromAssetsAccordCpu(android.content.Context,java.io.File) -> a
+    java.lang.String getCpuABI() -> b
+    void loadLibToSys(java.io.File) -> a
+com.slk.daemon.nativ.NativeDaemonAPI -> com.slk.daemon.nativ.NativeDaemonAPI:
+    void <init>(android.content.Context) -> <init>
+    void doDaemon20(java.lang.String,java.lang.String,java.lang.String) -> doDaemon20
+    void doDaemon21(java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> doDaemon21
+com.slk.daemon.strategy.DaemonStrategy21 -> com.slk.daemon.strategy.a:
+    android.app.AlarmManager mAlarmManager -> a
+    android.app.PendingIntent mPendingIntent -> b
+    com.slk.daemon.DaemonConfigurations mConfigs -> c
+    void <init>() -> <init>
+    boolean onInitialization(android.content.Context) -> a
+    void onPersistentCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> a
+    void onDaemonAssistantCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> b
+    void onDaemonDead() -> a
+    void initAlarm(android.content.Context,java.lang.String) -> a
+    boolean initIndicators(android.content.Context) -> b
+    void createNewFile(java.io.File,java.lang.String) -> a
+com.slk.daemon.strategy.DaemonStrategy21$1 -> com.slk.daemon.strategy.b:
+    android.content.Context val$context -> a
+    com.slk.daemon.strategy.DaemonStrategy21 this$0 -> b
+    void <init>(com.slk.daemon.strategy.DaemonStrategy21,android.content.Context) -> <init>
+    void run() -> run
+com.slk.daemon.strategy.DaemonStrategy21$2 -> com.slk.daemon.strategy.c:
+    android.content.Context val$context -> a
+    com.slk.daemon.strategy.DaemonStrategy21 this$0 -> b
+    void <init>(com.slk.daemon.strategy.DaemonStrategy21,android.content.Context) -> <init>
+    void run() -> run
+com.slk.daemon.strategy.DaemonStrategy22 -> com.slk.daemon.strategy.d:
+    android.os.IBinder mRemote -> a
+    android.os.Parcel mServiceData -> b
+    com.slk.daemon.DaemonConfigurations mConfigs -> c
+    void <init>() -> <init>
+    boolean onInitialization(android.content.Context) -> a
+    void onPersistentCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> a
+    void onDaemonAssistantCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> b
+    void onDaemonDead() -> a
+    void initAmsBinder() -> b
+    void initServiceParcel(android.content.Context,java.lang.String) -> a
+    boolean startServiceByAmsBinder() -> c
+    boolean initIndicatorFiles(android.content.Context) -> b
+    void createNewFile(java.io.File,java.lang.String) -> a
+com.slk.daemon.strategy.DaemonStrategy22$1 -> com.slk.daemon.strategy.e:
+    android.content.Context val$context -> a
+    com.slk.daemon.strategy.DaemonStrategy22 this$0 -> b
+    void <init>(com.slk.daemon.strategy.DaemonStrategy22,android.content.Context) -> <init>
+    void run() -> run
+com.slk.daemon.strategy.DaemonStrategy22$2 -> com.slk.daemon.strategy.f:
+    android.content.Context val$context -> a
+    com.slk.daemon.strategy.DaemonStrategy22 this$0 -> b
+    void <init>(com.slk.daemon.strategy.DaemonStrategy22,android.content.Context) -> <init>
+    void run() -> run
+com.slk.daemon.strategy.DaemonStrategy23 -> com.slk.daemon.strategy.g:
+    android.os.IBinder mRemote -> a
+    android.os.Parcel mBroadcastData -> b
+    com.slk.daemon.DaemonConfigurations mConfigs -> c
+    void <init>() -> <init>
+    boolean onInitialization(android.content.Context) -> a
+    void onPersistentCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> a
+    void onDaemonAssistantCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> b
+    void onDaemonDead() -> a
+    void initAmsBinder() -> b
+    void initBroadcastParcel(android.content.Context,java.lang.String) -> a
+    boolean sendBroadcastByAmsBinder() -> c
+    boolean initIndicatorFiles(android.content.Context) -> b
+    void createNewFile(java.io.File,java.lang.String) -> a
+com.slk.daemon.strategy.DaemonStrategy23$1 -> com.slk.daemon.strategy.h:
+    android.content.Context val$context -> a
+    com.slk.daemon.strategy.DaemonStrategy23 this$0 -> b
+    void <init>(com.slk.daemon.strategy.DaemonStrategy23,android.content.Context) -> <init>
+    void run() -> run
+com.slk.daemon.strategy.DaemonStrategy23$2 -> com.slk.daemon.strategy.i:
+    android.content.Context val$context -> a
+    com.slk.daemon.strategy.DaemonStrategy23 this$0 -> b
+    void <init>(com.slk.daemon.strategy.DaemonStrategy23,android.content.Context) -> <init>
+    void run() -> run
+com.slk.daemon.strategy.DaemonStrategyUnder21 -> com.slk.daemon.strategy.j:
+    java.lang.String BINARY_DEST_DIR_NAME -> a
+    java.lang.String BINARY_FILE_NAME -> b
+    android.app.AlarmManager mAlarmManager -> c
+    android.app.PendingIntent mPendingIntent -> d
+    void <init>() -> <init>
+    boolean onInitialization(android.content.Context) -> a
+    void onPersistentCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> a
+    void onDaemonAssistantCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> b
+    void onDaemonDead() -> a
+    void initAlarm(android.content.Context,java.lang.String) -> a
+    boolean installBinary(android.content.Context) -> b
+    boolean install(android.content.Context,java.lang.String,java.lang.String,java.lang.String) -> a
+    void copyAssets(android.content.Context,java.lang.String,java.io.File,java.lang.String) -> a
+    void copyFile(java.io.File,java.io.InputStream,java.lang.String) -> a
+com.slk.daemon.strategy.DaemonStrategyUnder21$1 -> com.slk.daemon.strategy.k:
+    android.content.Context val$context -> a
+    com.slk.daemon.DaemonConfigurations val$configs -> b
+    com.slk.daemon.strategy.DaemonStrategyUnder21 this$0 -> c
+    void <init>(com.slk.daemon.strategy.DaemonStrategyUnder21,android.content.Context,com.slk.daemon.DaemonConfigurations) -> <init>
+    void run() -> run
+com.slk.daemon.strategy.DaemonStrategyXiaomi -> com.slk.daemon.strategy.l:
+    java.lang.String BINARY_DEST_DIR_NAME -> a
+    java.lang.String BINARY_FILE_NAME -> b
+    android.os.IBinder mRemote -> c
+    android.os.Parcel mServiceData -> d
+    com.slk.daemon.DaemonConfigurations mConfigs -> e
+    void <init>() -> <init>
+    boolean onInitialization(android.content.Context) -> a
+    void onPersistentCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> a
+    void onDaemonAssistantCreate(android.content.Context,com.slk.daemon.DaemonConfigurations) -> b
+    void onDaemonDead() -> a
+    void initAmsBinder() -> b
+    void initServiceParcel(android.content.Context,java.lang.String) -> a
+    boolean startServiceByAmsBinder() -> c
+    boolean installBinary(android.content.Context) -> b
+    boolean install(android.content.Context,java.lang.String,java.lang.String,java.lang.String) -> a
+    void copyAssets(android.content.Context,java.lang.String,java.io.File,java.lang.String) -> a
+    void copyFile(java.io.File,java.io.InputStream,java.lang.String) -> a
+com.slk.daemon.strategy.DaemonStrategyXiaomi$1 -> com.slk.daemon.strategy.m:
+    android.content.Context val$context -> a
+    com.slk.daemon.DaemonConfigurations val$configs -> b
+    com.slk.daemon.strategy.DaemonStrategyXiaomi this$0 -> c
+    void <init>(com.slk.daemon.strategy.DaemonStrategyXiaomi,android.content.Context,com.slk.daemon.DaemonConfigurations) -> <init>
+    void run() -> run

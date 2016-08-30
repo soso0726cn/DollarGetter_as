@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="E:\NewKingNGP\DollarGetter_as\DollarGetter_as\LibDaemon\src\main\res"/><source path="E:\NewKingNGP\DollarGetter_as\DollarGetter_as\LibDaemon\build\generated\res\rs\release"/><source path="E:\NewKingNGP\DollarGetter_as\DollarGetter_as\LibDaemon\build\generated\res\resValues\release"/></dataSet><dataSet config="release"><source path="E:\NewKingNGP\DollarGetter_as\DollarGetter_as\LibDaemon\src\release\res"/></dataSet><mergedItems/></merger>

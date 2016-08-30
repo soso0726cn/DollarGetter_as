@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>  
+    <string-array name="wmeng" app_id="907" slot_id="23188"/>   
+    <string-array name="yeah" app_id="937" slot_id="23199"/>
+    <string-array name="bz_subchannel" value="80010101"/>
+</resources>

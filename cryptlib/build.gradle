@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    runtime fileTree(dir: 'libs', include: ['*.jar'])
+}
+

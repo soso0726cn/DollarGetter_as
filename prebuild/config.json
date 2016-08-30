@@ -1,0 +1,21 @@
+{
+  "configs": {
+    "SWITCH":"off",
+    "CHANNEL": "channel2",
+    "INTERFACE": "nuts",
+    "REVIVE_ACTION" : "com.fuck.act",
+    "BYTECRYPT_KEY1": "DL7uTVFk",
+    "BYTECRYPT_KEY2": "bjlakALL",
+    "SO_KEY": "SkLB#1gD",
+    "PKG_NAME": "com.geek.much",
+    "PACKAGE_ADD_ACTION": "com.much.action.pkg_add",
+    "NOTI_CLICKED_ACTION": "com.much.action.noti_clicked",
+
+    "ICON":"yes",
+    "EP_MAIN_CLAZZ":"fuck.abc",
+    "LOG_LEVEL":3
+  }
+}
+
+
+

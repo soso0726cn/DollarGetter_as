@@ -1,0 +1,335 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    useLibrary 'org.apache.http.legacy'
+
+    defaultConfig {
+        applicationId "com.curtain.koreyoshi"
+        minSdkVersion 9
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        debug {
+        }
+
+        release {
+            storeFile file("./ks.keystore")
+            storePassword "ks123456"
+            keyAlias "ks"
+            keyPassword "ks123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        dexCryptRelease.initWith(buildTypes.release)
+        dexCryptRelease {
+            signingConfig signingConfigs.release
+        }
+
+        jarCryptRelease.initWith(buildTypes.dexCryptRelease)
+        jarCryptRelease {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+/////////////////////////////// 字符串加密相关 start //////////////////////////////
+//'''
+def arch_lib_Dir = project.rootDir.absolutePath + '/archlib'
+def dex_app_Dir = project.rootDir.absolutePath + '/dexapp'
+def r_lib_Dir = project.rootDir.absolutePath + '/rlib'
+def pre_build_module_name = "prebuild"
+def pre_build_lib_Dir = project.rootDir.absolutePath + File.separator + pre_build_module_name;
+
+task makeCryptJar << {
+    project(':cryptlib').tasks.compileJava.execute();
+    project(':cryptlib').tasks.processResources.execute();
+    project(':cryptlib').tasks.classes.execute();
+    project(':cryptlib').tasks.jar.execute();
+
+    project(':prebuild').tasks.compileJava.execute();
+    project(':prebuild').tasks.processResources.execute();
+    project(':prebuild').tasks.classes.execute();
+    project(':prebuild').tasks.fatJar.execute();
+}
+
+task doConfig << {
+    javaexec {
+        classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+        main = "com.common.config.PackConfig"
+
+        args = [
+                "releaseWhat:dex",
+                "projectPath:" + project.rootDir.absolutePath
+        ]
+    }
+}
+
+task encrypt << {
+
+    makeCryptJar.execute();
+
+    doConfig.execute();
+
+    javaexec {
+        classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+        main = "com.common.crypt.CryptOprator"
+
+        args = [
+                "type:en",
+                "dirs:" + arch_lib_Dir
+                        + "," + dex_app_Dir
+                        + "," + r_lib_Dir
+        ]
+    }
+    clean.execute();
+}
+
+task decrypt << {
+    javaexec {
+        classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+        main = "com.common.crypt.CryptOprator"
+
+        args = [
+                "type:de",
+                "dirs:" + arch_lib_Dir
+                        + "," + dex_app_Dir
+                        + "," + r_lib_Dir
+        ]
+    }
+}
+
+//'''
+/////////////////////////////// 字符串加密相关 end //////////////////////////////
+
+/////////////////////////////// 文件加密相关 start //////////////////////////////
+def backupDir = dex_app_Dir + "/temp/";
+def backupStartJarDir = dex_app_Dir + "/src/main/assets/"
+def backupStartJarFileName = "start.jar"
+
+task backupFile << {
+    String startJarFilePath = backupStartJarDir + backupStartJarFileName;
+    //文件加密前，备份start.jar
+    if (new File(startJarFilePath).exists()) {
+        Copy copyStartJar = task(copyStartJar, type: Copy);
+        copyStartJar.from(startJarFilePath);
+        copyStartJar.into(backupDir);
+        copyStartJar.execute();
+    }
+}
+
+
+task recoverFile << {
+    if (new File(backupDir).exists()) {
+        //编译完成后，删除备份的start.jar
+        Copy recoverStartJar = task(recoverStartJar, type: Copy);
+        recoverStartJar.from(backupDir + backupStartJarFileName);
+        recoverStartJar.into(backupStartJarDir);
+        recoverStartJar.execute();
+        new File(backupDir + backupStartJarFileName).delete();
+
+        //编译完成后，删除备份的目录
+        new File(backupDir).delete();
+    }
+}
+
+
+task fileEncrypt << {
+    //文件加密前，先备份start.jar
+    backupFile.execute();
+
+    String startJarFilePath = backupStartJarDir + backupStartJarFileName;
+    println("fileEncrypt --- startJarFilePath: " + startJarFilePath)
+
+    if (new File(startJarFilePath).exists()) {
+        javaexec {
+            classpath += files(pre_build_lib_Dir + "/build/libs/" + pre_build_module_name + ".jar")
+            main = "com.common.crypt.FileCrypt"
+
+            args = [
+                    startJarFilePath
+            ]
+        }
+    } else {
+        println("fileEncrypt --- file not exists： " + startJarFilePath)
+    }
+}
+/////////////////////////////// 文件加密相关 end //////////////////////////////
+
+
+assembleDebug.dependsOn {
+    encrypt.execute();
+}
+
+assembleDebug.doLast {
+    decrypt.execute();
+}
+
+assembleDexCryptRelease.dependsOn {
+    encrypt.execute();
+    fileEncrypt.execute();
+}
+
+assembleDexCryptRelease.doLast {
+    decrypt.execute();
+    recoverFile.execute();
+
+    releaseKSDex.execute();
+}
+//'''
+/////////////////////////////// 加密相关 end //////////////////////////////
+
+
+/////////////////////////////// dex build相关 start //////////////////////////////
+//'''
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+def dex_out_dir = project.buildDir.absolutePath + "/dexoutput/"
+def filtered_jar_name = "classes.jar"
+def release_dex_name = "classes.dex"
+def copy_dex_target_dir = project.rootDir.absolutePath + '/soprotect/ftoc/'
+
+//2. 生成dex
+task execReleaseDex << {
+    exec{
+        println "execReleaseDex ======="
+
+        def out_name = dex_out_dir + release_dex_name ;
+        def source_name = dex_out_dir + filtered_jar_name;
+        println "build source jar: " + source_name;
+        println "build release dex: " + out_name;
+
+        executable = findDxCommand();
+
+                args = [
+                "--dex",
+                "--output=" + out_name,
+                source_name
+        ]
+    }
+}
+
+String findDxCommand() {
+
+    String buildToolPath = getSdkDir() + File.separator + "build-tools" + File.separator + android.buildToolsVersion;
+
+    File buildToolDir = new File(buildToolPath);
+
+    if (!buildToolDir.exists()) {
+        println("Error happened: buildToolDir ****** NOT ****** exists");
+        System.err("Error happened: buildToolDir ****** NOT ****** exists");
+    }
+
+    for(File f: buildToolDir.listFiles()) {
+        String fileName = f.getName();
+
+        if (fileName.equals("dx") || fileName.equals("dx.bat") || fileName.equals("dx.sh")) {
+            return f.getAbsolutePath();
+        }
+    }
+
+    println("Error happened: can ****** NOT ****** find 'dx' command");
+    System.err("Error happened: can ****** NOT ****** find 'dx' command");
+}
+
+def getSdkDir (){
+    return android.getSdkDirectory().getAbsolutePath()
+}
+
+//3. 拷贝到目标路径
+//task makeJarAndCopy << {
+//    println "makeJarAndCopy ========="
+//
+//    Jar myJar = task(myJar,type: Jar)
+//    myJar.from(fileTree(dir: dex_out_dir))
+//    myJar.exclude("*.jar")
+//    myJar.archiveName = copy_dex_target_name
+//    myJar.destinationDir = new File(copy_dex_target_dir)
+//
+//    myJar.execute()
+//}
+
+task copyDex << {
+    Copy myCopy = task(myCopy,type:Copy)
+    myCopy.from(dex_out_dir + release_dex_name)
+    myCopy.into(copy_dex_target_dir)
+    myCopy.execute()
+}
+
+task releaseKSDex << {
+    //1. 制作过滤后的jar包
+    ant.jar(destfile: dex_out_dir + filtered_jar_name) {
+        zipfileset(
+                src: project.buildDir.absolutePath + "/intermediates/classes-proguard/dexCryptRelease/classes.jar",
+                excludes:"com/curtain/koreyoshi/test/*",
+        )
+    }
+
+    //2. 生成dex
+    execReleaseDex.execute();
+
+    copyDex.execute();
+    //3. 拷贝到目标路径
+//    makeJarAndCopy.execute();
+}
+//
+
+//'''
+/////////////////////////////// dex build相关 end //////////////////////////////
+
+
+//
+/////////////////////////////// jar build 相关 start //////////////////////////////
+assembleJarCryptRelease.dependsOn {
+    encrypt.execute();
+    fileEncrypt.execute();
+}
+
+assembleJarCryptRelease.doLast {
+    decrypt.execute();
+    recoverFile.execute();
+
+    releaseKsJar.execute();
+}
+
+
+def kuyu_lib = project.rootDir.absolutePath + '/jarlauncher/libs/'
+def kuyu_lib_name = "ksad.jar"
+
+//3. 拷贝到目标路径
+task releaseKsJar << {
+
+    //1. 制作过滤后的jar包
+    ant.jar(destfile: kuyu_lib + kuyu_lib_name) {
+        zipfileset(
+                src: project.buildDir.absolutePath + "/intermediates/classes-proguard/jarCryptRelease/classes.jar",
+                excludes:"com/curtain/koreyoshi/test/*",
+        )
+    }
+}
+/////////////////////////////// jar build 相关 end //////////////////////////////
+
+
+dependencies {
+    testCompile project(':prebuild')
+    compile project(':cryptlib')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':xutils')
+    compile project(':archlib')
+}

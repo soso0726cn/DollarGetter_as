@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.sylar.signvalues"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    signingConfigs{
+        debug{
+        }
+
+        release{
+            storeFile file( project.rootDir.absolutePath + '/soprotect/release_kingpin_n908_20160525.jks')
+            storePassword 'ks123456'
+            keyAlias 'kingpin_n908'
+            keyPassword 'ks123456'
+        }
+    }
+
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        SoJarRelease.initWith(buildTypes.release)
+        SoJarRelease {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
